@@ -1,0 +1,22 @@
+{% extends 'auctions/layout.html' %}
+{% block title %}
+    Create Listings
+{% endblock title %}
+{% block body %}
+    <div class="page-heading">
+        <h1>Create Listings</h1>
+    </div>
+    <div class="list-form">
+        <form action="{% url 'listing' %}" method="POST">
+            {% csrf_token %}
+            {% if message %}
+            <div>{{ message }}</div>
+            {% endif %}
+            <table>
+                {{ listform }}
+            </table>
+            <input type="hidden" name="hiddenuser" value={{ user.username }}>
+            <input type="submit" value="Create Listing">
+        </form>
+    </div> 
+{% endblock body %}

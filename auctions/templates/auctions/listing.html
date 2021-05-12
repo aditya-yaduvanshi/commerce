@@ -1,0 +1,164 @@
+{% extends 'auctions/layout.html' %}
+{% block title %}
+    {{ listing.title }}
+{% endblock title %}
+{% block body %}
+    <div class="page-heading">
+        <h1>Listing</h1>
+    </div>
+    <div class="main-list">
+        {% if user.is_authenticated %}
+            {% if listing.status == "CLOSE" and listing.buyer == user %}
+                <div>
+                    CONGRATULATIONS! {{ user.username }}<br>
+                    You are the WINNER of this listing auction.
+                </div>
+            {% endif %}
+        {% endif %}
+        {% if list_status %}
+            <div class="main-list-status">
+                {{ list_status }}
+            </div>
+        {% endif %}
+        {% if close_status %}
+            <div class="main-list-status">
+                {{ close_status }}
+            </div>
+        {% endif %}
+        <div class="main-list-pic">
+            {% if listing.picture %}
+                <img src="media/{{ listing.picture }}" alt="Image didn't loaded!">
+            {% elif listing.pictureurl %}
+                <img src="{{ listing.pictureurl }}" alt="Image Url Not Working!">
+            {% else %}
+                <img src="https://1m19tt3pztls474q6z46fnk9-wpengine.netdna-ssl.com/wp-content/themes/unbound/images/No-Image-Found-400x264.png" alt="Image not found!">
+            {% endif %}
+        </div>
+        <div class="main-list-watch-action">
+            {% if user.is_authenticated %}
+                Watchlist : 
+                {% if listing not in watchlist and user not in watchuser %}
+                    <a href="{% url 'watchlist' user.username listing.id 'add' %}" role="button"> ADD </a>
+                {% endif %}
+                {% if watch_status %}
+                    <span>{{ watch_status }}</span>
+                {% endif %}
+                {% if user in watchuser and listing in watchlist %}
+                    <a href="{% url 'watchlist' user.username listing.id 'remove' %}" role="button"> REMOVE </a>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="main-list-content">
+            <h4>{{ listing.title }}</h4>
+            <span>Listed on : {{ listing.listingtime }}</span><br>
+            <span>Starting Bid : </span><strong>{{ listing.price }}</strong><br>
+            <strong>{{ listing.status }}</strong><br>
+            <span>Current Bid : </span>
+            <strong>
+                {% if listing.currentbid == None %}
+                    No bid so far!
+                {% else %}
+                    {{ listing.currentbid }}
+                {% endif %}
+            </strong><br>
+            <span>Category : </span><strong>{{ listing.category.category }}</strong><br>
+            <p>{{ listing.description }}</p>
+            <span>Listed by : </span><strong>{{ listing.seller }}</strong>    
+        </div>
+        {% if listing.seller == user %}
+            <div>
+                {% if listing.status == "OPEN" %}
+                    <a href="{% url 'listing' user listing.id 'close' %}" role="button">CLOSE LISTING</a>
+                {% else %}
+                    <button disabled >Listing Closed</button>
+                    <span>{{ listing.closedtime }}</span>
+                {% endif %}
+            </div>
+        {% endif %}
+        <div class="main-list-bids-comment">
+            <h3>Bids</h3>
+            {% if listing.status == "OPEN" %}
+               {% if user.is_authenticated %}
+                   <div class="bid-form">
+                       <form action="{% url 'listing' listing.id user.username 'bidnow' %}" method="POST">
+                           {% csrf_token %}
+                           <table>
+                               {{ bidform }}
+                           </table>
+                           <input type="submit" value="Bid Now">
+                       </form>
+                   </div>
+               {% endif %}
+            {% endif %}
+            {% for bid in bids|dictsortreversed:'bid' %}
+                <div class="bids">
+                    <h5>Bid : {{ bid.bid }} {% if listing.currentbid == bid.bid %}<span>Current Bid</span>{% endif %}</h5>
+                    <span>Bid by : </span><strong>{{ bid.bidder.username }}</strong><br>
+                    <span>Bid on : {{ bid.bidtime }}</span><br>
+                    <strong>Additional Note : </strong><p>{{ bid.note }}</p>
+                    {% if bid.feedowner != None %}
+                        <strong>{{ bid.feedowner }}</strong><span>List Owner</span>
+                        <p>{{ bid.feedback }}</p>
+                    {% endif %}
+                    {% if user == listing.seller %}
+                        {% if feedstatus == "Bid" %}
+                            <div>{{ feedstatus }} feedback posted successfully!</div>
+                        {% endif %}
+                        <form action="{% url 'listing' listing.id user.username 'bidreply' bid.id %}" method="POST">
+                            {% csrf_token %}
+                            <table>
+                                {{ bidfeed }}
+                            </table>
+                            <input type="submit" value="Reply">
+                        </form>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <div class="bids">
+                    No bids so far!
+                </div>
+            {% endfor %}
+        </div>
+        <div class="main-list-bids-comment">
+            <h3>Comments</h3>
+            {% if user.is_authenticated %}
+                <div class="comment-form">
+                    <form action="{% url 'listing' listing.id user.username 'commentnow' %}" method="POST">
+                        {% csrf_token %}
+                        <table>
+                            {{ commentform }}
+                        </table>
+                        <input type="submit" value="Comment Now">
+                    </form>
+                </div>
+            {% endif %}
+            {% for comment in comments %}
+                <div class="comments">
+                    <h5>{{ comment.commenter.username }}{% if comment.commenter == listing.seller %}<span> List Owner </span>{% endif %}</h5>
+                    <span>Comment on : {{ comment.commenttime }}</span><br>
+                    <p><strong>{{ comment.title }} : </strong>{{ comment.comment }}</p>
+                    {% if comment.feedowner != None %}
+                        <strong>{{ comment.feedowner }}</strong><span>List Owner</span>
+                        <p>{{ comment.feedback }}</p>
+                    {% endif %}
+                    {% if user == listing.seller %}
+                        {% if feedstatus == "Comment" %}
+                            <div>{{ feedstatus }} feedback posted successfully!</div>
+                        {% endif %}
+                        <form action="{% url 'listing' listing.id user.username 'commentreply' comment.id %}" method="POST">
+                            {% csrf_token %}
+                            <table>
+                                {{ commentfeed }}
+                            </table>
+                            <input type="submit" value="Reply">
+                        </form>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <div class="comments">
+                    No comments so far!
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock body %}

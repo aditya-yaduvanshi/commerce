@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans&display=swap');
+* {
+    box-sizing: border-box;
+}
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Bree Serif', sans-serif;
+    font-size: 16px;
+    background: white;
+}
+a {
+    text-decoration: none;
+}
+.header {
+    background-color: rgb(15, 15, 15);
+    display: flex;
+}
+#brand {
+    max-width: 500px;
+    padding-right: 40px;
+    padding-left: 40px;
+    display: flex;
+    position: relative;
+    top: 0;
+}
+#auction-icon, #auction-name {
+    height: 100px;
+    display: flex;
+    border-radius: 10%;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+#auction-icon img {
+    width: 100%;
+}
+#auction-name {
+    font-size: 2rem;
+    font-weight: bolder;
+    color: rgb(245, 245, 245);
+}
+#auction-name label {
+    margin: auto;
+}
+#auction-name label:hover {
+    color: white;
+}
+.search-form {
+    height: 100px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+}
+.search-form input {
+    height: 30px;
+    border-radius: 20px;
+    margin: auto;
+    border-color: rgb(245, 245, 245);
+}
+.search-form #search-text {
+    width: 200px;
+    background: rgb(243, 243, 243);
+    padding-left: 10px;
+}
+.search-form #search {
+    height: 30px;
+    width: 80px;
+    font-weight: bold;
+    background: rgb(0, 110, 255);
+    color: rgb(245, 245, 245);
+}
+.search-form #search:hover {
+    color: white;
+    border-color: white;
+    transition: 0.3s;
+    background: rgb(0, 125, 197);
+}
+.nav-box {
+    display: flex;
+}
+.nav {
+    list-style: none;
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.nav-item {
+    margin: 3px;
+    height: 100%;
+}
+.nav-item:hover {
+    background: chocolate;
+    color: white;
+    transition: 0.3s;
+    border-radius: 20px;
+}
+.nav-link {
+    text-decoration: none;
+    padding: 5px;
+    color: white;
+}
+.log-indicator {
+    background: orange;
+    color: rgb(245, 245, 245);
+    display: inline-block;
+    font-weight: bold;
+
+}
+@media screen and (max-width: 700px){
+    .toggle-button {
+        visibility: visible;
+        position: relative;
+        right: 0;
+        top: 0;
+        height: 100px;
+        width: 100px;
+        background: blue;
+    }
+}

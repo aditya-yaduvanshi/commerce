@@ -1,0 +1,66 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="page-heading">
+        <h1>Active Listings</h1>
+    </div><hr>
+    <div>
+        {% if active_status %}
+            {{ active_status }}
+        {% endif %}
+    </div>
+    <div class="container list-box">
+        {% for listing in listings %}
+            {% if listing.status == "OPEN" %}
+                <div class="row list">
+                <a href="{% url 'listing' listing.id %}"><div class="col-sm-4 list-pic">
+                    {% if listing.picture %}
+                        <img src="media/{{ listing.picture }}" alt="Image Isn't Loaded!">
+                    {% elif listing.pictureurl %}
+                        <img src="{{ listing.pictureurl }}" alt="Image Url Not Working!">
+                    {% else %}
+                        <img src="https://1m19tt3pztls474q6z46fnk9-wpengine.netdna-ssl.com/wp-content/themes/unbound/images/No-Image-Found-400x264.png" alt="No image found!">
+                    {% endif %}
+                </div></a>
+                <div class="col-sm-6 watch-action" id="watch-action">
+                    {% if user.is_authenticated %}
+                        Watchlist : 
+                            {% if listing not in watchlist and user not in watchuser %}
+                                <a href="{% url 'watchlist' user.username listing.id 'add' %}" role="button"> ADD </a>
+                            {% endif %}
+                            {% if watch_status %}
+                                {% if res_list == listing %}
+                                    <span>{{ watch_status }}</span>
+                                {% endif %}
+                            {% endif %}
+                            {% if user in watchuser and listing in watchlist %}
+                                <a href="{% url 'watchlist' user.username listing.id 'remove' %}" role="button"> REMOVE </a>
+                            {% endif %}
+                    {% endif %}
+                </div>
+                <div class="col-sm-6 list-content">
+                    <a href="{% url 'listing' listing.id %}"><h4>{{ listing.title }}</h4></a>
+                    <span>Listed on : {{ listing.listingtime }}</span><br>
+                    <span>Starting Bid : </span><strong>{{ listing.price }}</strong><br>
+                    <strong>{{ listing.status }}</strong><br>
+                    <span>Current Bid : </span>
+                    <strong>
+                        {% if listing.currentbid == None %}
+                            No bid so far!
+                        {% else %}
+                            {{ listing.currentbid }}
+                        {% endif %}
+                    </strong><br>
+                    <span>Category : </span><strong>{{ listing.category.category }}</strong><br>
+                    <p>{{ listing.description }}</p>
+                    <span>Listed by : </span><strong>{{ listing.seller }}</strong>
+                </div>
+            </div>
+            {% endif %}
+            {% empty %}
+                <div class="row is-danger empty-list">
+                    Sorry no listings for now! Please Check back later.
+                </div>
+        {% endfor %}
+    </div>
+{% endblock %}
