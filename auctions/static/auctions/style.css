@@ -86,11 +86,21 @@ a {
     justify-content: space-between;
     align-items: center;
 }
+.nav-item {
+    margin: auto 2px;
+}
+.nav-item:hover>.nav-link {
+    color: white;
+}
 .log-indicator {
-    background: orange;
+    background: blue;
     color: rgb(245, 245, 245);
-    display: inline-block;
+    display: flex;
     font-weight: bold;
+    align-items: center;
+    margin: auto;
+    padding: 6px;
+    border-radius: 4px;
 }
 @media screen and (max-width: 700px){
     .toggle-button {
