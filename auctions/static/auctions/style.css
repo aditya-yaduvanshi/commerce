@@ -26,13 +26,16 @@ a {
 }
 #auction-icon, #auction-name {
     height: 100px;
+    min-width: 100%;
     display: flex;
+    align-items: center;
     border-radius: 10%;
     margin-left: 2px;
     margin-right: 2px;
 }
 #auction-icon img {
     width: 100%;
+    max-width: 100%;
 }
 #auction-name {
     font-size: 2rem;
@@ -52,8 +55,8 @@ a {
     align-items: center;
 }
 .search-form input {
-    height: 30px;
-    border-radius: 20px;
+    height: 36px;
+    border-radius: 4px;
     margin: auto;
     border-color: rgb(245, 245, 245);
 }
@@ -63,7 +66,7 @@ a {
     padding-left: 10px;
 }
 .search-form #search {
-    height: 30px;
+    height: 36px;
     width: 80px;
     font-weight: bold;
     background: rgb(0, 110, 255);
