@@ -26,16 +26,14 @@ a {
 }
 #auction-icon, #auction-name {
     height: 100px;
-    min-width: 100%;
     display: flex;
     align-items: center;
-    border-radius: 10%;
     margin-left: 2px;
     margin-right: 2px;
 }
 #auction-icon img {
     width: 100%;
-    max-width: 100%;
+    min-width: 100%;
 }
 #auction-name {
     font-size: 2rem;
@@ -44,6 +42,9 @@ a {
 }
 #auction-name label {
     margin: auto;
+}
+#auction-name:hover, #auction-icon:hover {
+    background: rgb(25, 25, 25);
 }
 #auction-name label:hover {
     color: white;
@@ -105,6 +106,7 @@ a {
     padding: 6px;
     border-radius: 4px;
 }
+
 @media screen and (max-width: 700px){
     .toggle-button {
         visibility: visible;

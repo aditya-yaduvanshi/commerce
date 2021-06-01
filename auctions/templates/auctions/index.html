@@ -1,6 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+    <div class="main-div">
     <div class="page-heading">
         <h1>Active Listings</h1>
     </div><hr>
@@ -13,7 +14,7 @@
         {% for listing in listings %}
             {% if listing.status == "OPEN" %}
                 <div class="row list">
-                <a href="{% url 'listing' listing.id %}"><div class="col-sm-4 list-pic">
+                <a href="{% url 'listing' listing.id %}"><div class="col-md-6 list-pic">
                     {% if listing.picture %}
                         <img src="media/{{ listing.picture }}" alt="Image Isn't Loaded!">
                     {% elif listing.pictureurl %}
@@ -22,7 +23,7 @@
                         <img src="https://1m19tt3pztls474q6z46fnk9-wpengine.netdna-ssl.com/wp-content/themes/unbound/images/No-Image-Found-400x264.png" alt="No image found!">
                     {% endif %}
                 </div></a>
-                <div class="col-sm-6 watch-action" id="watch-action">
+                <div class="col-md-6 watch-action" id="watch-action">
                     {% if user.is_authenticated %}
                         Watchlist : 
                             {% if listing not in watchlist and user not in watchuser %}
@@ -62,5 +63,6 @@
                     Sorry no listings for now! Please Check back later.
                 </div>
         {% endfor %}
+    </div>
     </div>
 {% endblock %}
